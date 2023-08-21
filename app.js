@@ -21,17 +21,17 @@ app.use(cors());
 // Parse JSON requests
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname,'./frontend/build')));
-app.get('*',(req,res)=>{
-    res.sendFile(
-        path.join(__dirname,'./frontend/build/index.html'),
-        function(err){
-            if (err) {
-            res.status(500).send(err)}
-        }
-    );
-});
+// Serve static files from the frontend build folder
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
+// Handle other routes and serve the index.html file for client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'), (err) => {
+    if (err) {
+      res.status(404).send('File not found'); // Return a 404 response if index.html is not found
+    }
+  });
+});
 
 
 // Use the imported routes for authentication, creating posts, and user operations
